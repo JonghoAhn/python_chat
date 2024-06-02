@@ -4,10 +4,13 @@
     <title>Chat Room</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"></script>
     <script src="https://code.jquery.com/jquery-3.7.1.slim.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.5/socket.io.js" integrity="sha512-luMnTJZ7oEchNDZAtQhgjomP1eZefnl82ruTH/3Oj/Yu5qYtwL7+dVRccACS/Snp1lFXq188XFipHKYE75IaQQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.0/socket.io.js"></script>
     <script type="text/javascript">
+
+
+
         $(document).ready(function() {
-            var socket = io.connect(location.protocol + '//' + document.domain  + '/chat');
+            var socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port + '/chat');
 
             socket.on('connect', function() {
                 socket.emit('join', {'username': '{{ username }}', 'room': '{{ room }}'});
