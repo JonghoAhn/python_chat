@@ -3,16 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chat App</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-</head>
     <title>Chat Room</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"></script>
     <script src="https://code.jquery.com/jquery-3.7.1.slim.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.0/socket.io.js"></script>
     <script type="text/javascript">
-
-
 
         $(document).ready(function() {
             var socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port + '/chat');
@@ -29,11 +25,11 @@
             });
 
             socket.on('message', function(data) {
-                $('#messages').append($('<li>').text(data.msg));
+                $('#messages').append($('<div>').text(data.msg));
             });
 
             socket.on('status', function(data) {
-                $('#messages').append($('<li>').text(data.msg));
+                $('#messages').append($('<div>').text(data.msg));
             });
         });
     </script>
