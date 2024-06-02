@@ -1,24 +1,41 @@
-from flask import Flask, render_template
-from flask_socketio import SocketIO
+from flask import Flask, render_template, session, request, redirect, url_for
+from flask_socketio import SocketIO, emit, join_room, leave_room
 
 app = Flask(__name__)
-app.secret_key ='mosan'
-socketio = SocketIO(app, cors_allowed_origins="*")
+app.config['SECRET_KEY'] = 'mosan'
+socketio = SocketIO(app)
 
-@app.route("/")
+@app.route('/', methods=['GET', 'POST'])
 def index():
-    return render_template("index.html")
+    if request.method == 'POST':
+        session['username'] = request.form['username']
+        session['room'] = 'default_room'
+        return redirect(url_for('chat'))
+    return render_template('index.html')
 
-@socketio.on("event")
-def event_handler(json):
-    if "data" in json:
-        if json["data"] == "Connect":
-            socketio.emit("response", {"nickname": "", "message": "새로운 유저 입장"})
-    else:
-        nickname = json["nickname"].encode("utf-8").decode("utf-8")
-        message = json["message"].encode("utf-8").decode("utf-8")
-        socketio.emit("response", {"nickname": nickname, "message": message})
+@app.route('/chat')
+def chat():
+    if 'username' not in session:
+        return redirect(url_for('index'))
+    return render_template('chat.html', username=session['username'], room=session['room'])
+
+@socketio.on('join', namespace='/chat')
+def join(message):
+    username = message['username']
+    room = message['room']
+    join_room(room)
+    emit('status', {'msg': username + ' has joined the room.'}, room=room)
+
+@socketio.on('message', namespace='/chat')
+def message(message):
+    emit('message', {'msg': message['username'] + ': ' + message['msg']}, room=message['room'])
+
+@socketio.on('leave', namespace='/chat')
+def leave(message):
+    username = message['username']
+    room = message['room']
+    leave_room(room)
+    emit('status', {'msg': username + ' has left the room.'}, room=room)
 
 if __name__ == '__main__':
-    socketio.run(app, debug=True, allow_unsafe_werkzeug=True)
-
+    socketio.run(app, debug=True,allow_unsafe_werkzeug=True)
