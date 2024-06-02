@@ -18,5 +18,5 @@ def event_handler(json):
         message = json["message"].encode("utf-8").decode("utf-8")
         socketio.emit("response", {"nickname": nickname, "message": message})
 
-if __name__ == "__main__":
-    socketio.run(app, host="0.0.0.0", port=5000, debug=False, allow_unsafe_werkzeug=True)
+if __name__ == '__main__':
+    app.run(debug=Flase)
