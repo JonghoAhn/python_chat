@@ -1,10 +1,11 @@
 from flask import Flask, render_template, session, request, redirect, url_for
 from flask_socketio import SocketIO, emit, join_room, leave_room
 from flask_cors import CORS
-
+import logging
+logging.basicConfig(level=logging.DEBUG)
 
 app = Flask(__name__)
-CORS(app,supports_credentials=True)
+CORS(app, resources={r"/*": {"origins": "*"}}, supports_credentials=True)
 app.config['SECRET_KEY'] = 'mosan'
 socketio = SocketIO(app, cors_allowed_origins="*")
 
