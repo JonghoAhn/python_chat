@@ -3,44 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat App</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <title>Chat Room</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"></script>
-    <script src="https://code.jquery.com/jquery-3.7.1.slim.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.0/socket.io.js"></script>
-    <script type="text/javascript">
-
-        $(document).ready(function() {
-            var socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port + '/chat');
-
-            socket.on('connect', function() {
-                socket.emit('join', {'username': '{{ username }}', 'room': '{{ room }}'});
-            });
-
-            $('form').submit(function(event) {
-                event.preventDefault();
-                let user_input = $('#user_input').val();
-                socket.emit('message', {'msg': user_input, 'username': '{{ username }}', 'room': '{{ room }}'});
-                $('#user_input').val('');
-            });
-
-            socket.on('message', function(data) {
-                $('#messages').append($('<div>').text(data.msg));
-            });
-
-            socket.on('status', function(data) {
-                $('#messages').append($('<div>').text(data.msg));
-            });
-        });
-    </script>
 </head>
 <body>
     <div class="container">
-        <ul id="messages" class="list-unstyled"></ul>
-        <form action="" method="POST">
-            <input type="text" id="user_input" placeholder="Type your message here...">
-            <button type="submit" class="btn btn-primary">Send</button>
+        <h2>Welcome to GroupChat</h2>
+        <form method="POST">
+            <div class="form-group">
+                <label for="username">Username:</label>
+                <input type="text" class="form-control" id="username" name="username" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Enter Chat</button>
         </form>
     </div>
 </body>
 </html>
+
