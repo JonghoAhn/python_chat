@@ -15,7 +15,8 @@
     <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.5/socket.io.js"></script>
     <script type="text/javascript">
-        var socket = io.connect("http://" + document.domain);
+        var socket = io.connect("https://port-0-python-chat-1272llwx73p0i.sel5.cloudtype.app/");
+
         socket.on("connect", function() {
             socket.emit("event", {data:"Connect"});
 
