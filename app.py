@@ -1,8 +1,7 @@
 from flask import Flask, render_template, session, request, redirect, url_for
 from flask_socketio import SocketIO, emit, join_room, leave_room
 from flask_cors import CORS
-import eventlet
-import eventlet.wsgi
+
 
 app = Flask(__name__)
 CORS(app)
