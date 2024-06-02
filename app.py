@@ -3,7 +3,7 @@ from flask_socketio import SocketIO, emit, join_room, leave_room
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'secret!'
-socketio = SocketIO(app,logger=True, engineio_logger=True)
+socketio = SocketIO(app)
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
