@@ -3,7 +3,7 @@ from flask_socketio import SocketIO, emit, leave_room,join_room
 import os
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = os.getenv('SECRET_KEY', 'default_key')  # 환경변수에서 비밀키를 가져오거나 기본값 사용
+app.config['SECRET_KEY'] = os.getenv('SECRET_KEY', 'mosan')  # 환경변수에서 비밀키를 가져오거나 기본값 사용
 socketio = SocketIO(app)
 
 @app.route('/', methods=['GET', 'POST'])
