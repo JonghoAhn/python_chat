@@ -8,6 +8,9 @@ CORS(app,supports_credentials=True)
 app.config['SECRET_KEY'] = 'mosan'
 socketio = SocketIO(app, cors_allowed_origins="*")
 
+
+
+
 @app.route('/', methods=['GET', 'POST'])
 def index():
     if request.method == 'POST':
