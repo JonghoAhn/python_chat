@@ -49,5 +49,10 @@ def leave(message):
     leave_room(room)
     emit('status', {'msg': f'{username} has left the room.'}, room=room)
 
+@app.after_request
+def set_response_headers(response):
+    response.headers['Cache-Control'] = 'no-cache, no-store, must-revalidate'  # Prevent caching
+    return response
+
 if __name__ == '__main__':
     eventlet.wsgi.server(eventlet.listen(('', 5000)), app)
