@@ -2,6 +2,7 @@ from flask import Flask, render_template
 from flask_socketio import SocketIO
 
 app = Flask(__name__)
+app.secret_key ='mosan'
 socketio = SocketIO(app)
 
 @app.route("/")
@@ -19,4 +20,4 @@ def event_handler(json):
         socketio.emit("response", {"nickname": nickname, "message": message})
 
 if __name__ == '__main__':
-    socketio.run(app, debug=True)
+    socketio.run(app, debug=True,allow_unsafe_werkzeug=True)
