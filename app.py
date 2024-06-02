@@ -13,8 +13,7 @@ app.config['CORS_HEADERS'] = 'Content-Type'
 CORS(app, resources={r"/*": {"origins": "*"}})
 
 # SocketIO 초기화
-socketio = SocketIO(app, async_mode='eventlet')
-
+socketio = SocketIO(app, cors_allowed_origins="*")
 @app.route('/', methods=['GET', 'POST'])
 def index():
     if request.method == 'POST':
