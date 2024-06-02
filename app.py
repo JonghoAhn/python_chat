@@ -1,15 +1,17 @@
 from flask import Flask, render_template, session, request, redirect, url_for
 from flask_socketio import SocketIO, emit, join_room, leave_room
-from flask_cors import CORS
-
+from flask_session import Session
+import redis
 
 app = Flask(__name__)
-CORS(app, resources={r"/*": {"origins": "*"}}, supports_credentials=True)
-app.config['SECRET_KEY'] = 'mosan'
-socketio = SocketIO(app, cors_allowed_origins="*")
+app.config['SECRET_KEY'] = 'your_secret_key'
+app.config['SESSION_TYPE'] = 'redis'
+app.config['SESSION_PERMANENT'] = False
+app.config['SESSION_USE_SIGNER'] = True
+app.config['SESSION_REDIS'] = redis.from_url('redis://localhost:6379')
 
-
-
+socketio = SocketIO(app, manage_session=False)
+Session(app)
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
@@ -27,21 +29,22 @@ def chat():
 
 @socketio.on('join', namespace='/chat')
 def join(message):
-    username = message['username']
-    room = message['room']
+    username = session.get('username', '')
+    room = session.get('room', '')
     join_room(room)
-    emit('status', {'msg': username + ' has joined the room.'}, room=room)
+    emit('status', {'msg': f"{username} has joined the room."}, room=room)
 
 @socketio.on('message', namespace='/chat')
 def message(message):
-    emit('message', {'msg': message['username'] + ': ' + message['msg']}, room=message['room'])
+    room = session.get('room', '')
+    emit('message', {'msg': f"{session['username']}: {message['msg']}"}, room=room)
 
 @socketio.on('leave', namespace='/chat')
 def leave(message):
-    username = message['username']
-    room = message['room']
+    username = session.get('username', '')
+    room = session.get('room', '')
     leave_room(room)
-    emit('status', {'msg': username + ' has left the room.'}, room=room)
+    emit('status', {'msg': f"{username} has left the room."}, room=room)
 
 if __name__ == '__main__':
-    socketio.run(app, debug=True)
+    socketio.run(app, debug=True, host='0.0.0.0')
