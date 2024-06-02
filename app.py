@@ -1,8 +1,7 @@
 from flask import Flask, render_template, session, request, redirect, url_for
 from flask_socketio import SocketIO, emit, join_room, leave_room
 from flask_cors import CORS
-import logging
-logging.basicConfig(level=logging.DEBUG)
+
 
 app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "*"}}, supports_credentials=True)
@@ -45,4 +44,4 @@ def leave(message):
     emit('status', {'msg': username + ' has left the room.'}, room=room)
 
 if __name__ == '__main__':
-    socketio.run(app, debug=False)
+    socketio.run(app, debug=True)
