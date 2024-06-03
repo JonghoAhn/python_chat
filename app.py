@@ -11,14 +11,14 @@ def index():
     if request.method == 'POST':
         session['username'] = request.form['username']
         session['room'] = 'default_room'
-        return redirect(url_for('chat'))
+        return redirect(url_for('chat', _external=True, _scheme='https')) # 호스트와 프로토콜을 수정합니다.
     return render_template('index.html')
 
 @app.route('/chat')
 def chat():
     username = session.get('username')
     if not username:
-        return redirect(url_for('index'))
+        return redirect(url_for('index', _external=True, _scheme='https')) # 호스트와 프로토콜을 수정합니다.
     return render_template('chat.html', username=username, room=session['room'])
 
 @socketio.on('join', namespace='/chat')
@@ -40,4 +40,4 @@ def leave(message):
     emit('status', {'msg': username + ' has left the room.'}, room=room)
 
 if __name__ == '__main__':
-    socketio.run(app, debug=True)
+    socketio.run(app, debug=True,allow_unsafe_werkzeug=True )
